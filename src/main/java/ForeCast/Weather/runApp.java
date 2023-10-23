@@ -21,7 +21,8 @@ public class runApp {
 		Thread.sleep(1000);
 
 		GetHostName name = new GetHostName();
-		System.out.println("\n      Hello " + name.getHostname() + " (⌐■_■) . Let's see where you Live.......");
+		System.out.println("\n      Hello " + name.getHostname()
+				+ " (⌐■_■) . Let's see where you Live.......(Fetching Your Location)");
 		Thread.sleep(500);
 		// GetIP ip = new GetIP();
 		// String ipAddress = ip.getIp();
@@ -37,8 +38,9 @@ public class runApp {
 		System.out.println("\n      Let's See what time of the Week is Suitable for me to Come...... ");
 		Thread.sleep(2000);
 		System.out.println(
-				"\n      Abra Ka Dabra, Forecast Weather in " + location.getCity() + "," + location.getCountry_name()
-						+ "\n\n");
+				"\n      Abra Ka Dabra....       (Fetching Location of ---> " + location.getCity() + ","
+						+ location.getCountry_name()
+						+ ")\n\n");
 
 		ForcastData forecastData = new ForcastData();
 		List<WeatherOfDay> weather = forecastData.get_Weather_Data_List();
