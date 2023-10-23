@@ -1,25 +1,20 @@
-package SpringBoot.Weather.Services;
+package ForeCast.Weather.Services.Retrieve_Host_IP_Location;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class GetIP {
+public class GetHostName {
 
-    private String ip = "", hostname = "";
+    private String hostname = "";
 
-    public GetIP() {
+    public GetHostName() {
         try {
             InetAddress localhost = InetAddress.getLocalHost();
-            ip = (String) localhost.getHostAddress();
             hostname = (String) localhost.getHostName();
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-    }
-
-    public String getIp() {
-        return ip;
     }
 
     public String getHostname() {
