@@ -38,19 +38,19 @@ public class GetLocation {
     }
 
     public String getCity() {
-    return city;
+        return city;
     }
 
     public String getCountry_name() {
-    return country_name;
+        return country_name;
     }
 
     public Double getLatitude() {
-    return latitude;
+        return latitude;
     }
 
     public Double getLongitude() {
-    return longitude;
+        return longitude;
     }
 
     @Override

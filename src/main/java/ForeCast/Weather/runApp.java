@@ -23,7 +23,7 @@ public class runApp {
 		GetHostName name = new GetHostName();
 		System.out.println("\n      Hello " + name.getHostname()
 				+ " (⌐■_■) . Let's see where you Live.......(Fetching Your Location)");
-		Thread.sleep(500);
+		// Thread.sleep(500);
 		// GetIP ip = new GetIP();
 		// String ipAddress = ip.getIp();
 		// System.out.println("Your Public IP Address is : " + ipAddress);
