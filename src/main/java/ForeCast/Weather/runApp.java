@@ -38,7 +38,7 @@ public class runApp {
 		System.out.println("\n      Let's See what time of the Week is Suitable for me to Come...... ");
 		Thread.sleep(2000);
 		System.out.println(
-				"\n      Abra Ka Dabra....       (Fetching Location of ---> " + location.getCity() + ","
+				"\n      Abra Ka Dabra....       (Fetching weather of ---> " + location.getCity() + ","
 						+ location.getCountry_name()
 						+ ")\n\n");
 
