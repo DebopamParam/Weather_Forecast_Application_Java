@@ -18,7 +18,7 @@ import ForeCast.Weather.Services.Retrieve_Host_IP_Location.GetLocation;
 
 public class ForcastData {
 
-    private static final String API_KEY = "67b0cdb6af1595fecfc2629063e5d4ef";
+    private static final String API_KEY = "Enter your API key";
     private static final String API_BASE_URL = "https://api.openweathermap.org/data/2.5/forecast";
 
     private JsonObject responseJsonObject;
