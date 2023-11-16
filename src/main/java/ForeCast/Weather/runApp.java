@@ -43,7 +43,7 @@ public class runApp {
                                                 + ")\n\n");
 
                 ForcastData forecastData = new ForcastData();
-                List<WeatherOfDay> weather = forecastData.get_Weather_Data_List();
+                List<WeatherOfDay> weather = forecastData.getWeatherDataList();
 
                 System.out.println("\t Date \t\t avgTemperature \t feelsLikeTemperature \t humidity \t Summary");
                 System.out.println("\t _____ \t\t ______________ \t ____________________ \t ________ \t _______");

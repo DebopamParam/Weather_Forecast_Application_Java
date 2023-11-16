@@ -1,6 +1,6 @@
 package ForeCast.Weather.Services.ForeCast;
 
-import java.io.IOException;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -12,71 +12,71 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import ForeCast.Weather.Services.Retrieve_Host_IP_Location.GetLocation;
 
 public class ForcastData {
 
-    JsonObject response_json_Object;
+    private static final String API_KEY = "67b0cdb6af1595fecfc2629063e5d4ef";
+    private static final String API_BASE_URL = "https://api.openweathermap.org/data/2.5/forecast";
 
-    public ForcastData() throws URISyntaxException, IOException, InterruptedException {
+    private JsonObject responseJsonObject;
 
-        GetLocation location = new GetLocation();
-        location = location.getLocation();
-        final String id = "67b0cdb6af1595fecfc2629063e5d4ef";
-        Gson gson = new Gson();
+    public ForcastData() {
+        try {
+            GetLocation location = new GetLocation();
+            location = location.getLocation();
 
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("https://api.openweathermap.org/data/2.5/forecast?lat=" + location.getLatitude()
-                        + "&lon=" + location.getLongitude() + "&appid=" + id + "&units=metric"))
-                .GET().build();
+            HttpClient httpClient = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(buildRequestUri(location.getLatitude(), location.getLongitude()))
+                    .GET().build();
 
-        HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
 
-        String json_String = response.body();
+            String jsonString = response.body();
+            Gson gson = new Gson();
+            responseJsonObject = gson.fromJson(jsonString, JsonObject.class);
 
-        JsonObject jsonObject = gson.fromJson(json_String, JsonObject.class);
-
-        response_json_Object = jsonObject;
+        } catch (Exception e) {
+            // Handle exceptions appropriately
+            e.printStackTrace();
+        }
     }
 
-    public List<WeatherOfDay> get_Weather_Data_List() {
-        List<WeatherOfDay> forecast = new ArrayList<WeatherOfDay>();
+    private URI buildRequestUri(double latitude, double longitude) throws URISyntaxException {
+        return new URI(API_BASE_URL + "?lat=" + latitude + "&lon=" + longitude + "&appid=" + API_KEY + "&units=metric");
+    }
 
-        RetrieveDate getDateObj = new RetrieveDate();
-        JsonArray jsonArrayOfForecast = response_json_Object.get("list").getAsJsonArray();
+    public List<WeatherOfDay> getWeatherDataList() {
+        List<WeatherOfDay> forecast = new ArrayList<>();
 
-        for (int i = 0; i < jsonArrayOfForecast.size(); i += 8) {
-            JsonElement json = jsonArrayOfForecast.get(i);
-            JsonObject jsonObject = json.getAsJsonObject();
+        RetrieveDate dateObj = new RetrieveDate();
+        JsonArray forecastJsonArray = responseJsonObject.getAsJsonArray("list");
 
-            Long dt = jsonObject.get("dt").getAsLong();
-            String date_of_the_day = getDateObj.getDate(dt);
+        for (int i = 0; i < forecastJsonArray.size(); i += 8) {
+            JsonObject jsonObject = forecastJsonArray.get(i).getAsJsonObject();
 
-            JsonObject main = jsonObject.get("main").getAsJsonObject();
+            Long dt = jsonObject.getAsJsonPrimitive("dt").getAsLong();
+            String dateOfTheDay = dateObj.getDate(dt);
 
-            Double avgTemperature = main.get("temp").getAsDouble();
+            JsonObject main = jsonObject.getAsJsonObject("main");
 
-            Double feelsLikeTemperature = main.get("feels_like").getAsDouble();
+            Double avgTemperature = main.getAsJsonPrimitive("temp").getAsDouble();
+            Double feelsLikeTemperature = main.getAsJsonPrimitive("feels_like").getAsDouble();
+            Double humidity = main.getAsJsonPrimitive("humidity").getAsDouble();
 
-            Double humidity = main.get("humidity").getAsDouble();
+            JsonArray weather = jsonObject.getAsJsonArray("weather");
+            JsonObject weatherObject = weather.get(0).getAsJsonObject();
 
-            JsonArray summ = jsonObject.get("weather").getAsJsonArray();
-            JsonElement summ_json = summ.get(0);
-            JsonObject summ_jsonObject = summ_json.getAsJsonObject();
+            String summary = weatherObject.getAsJsonPrimitive("description").getAsString();
 
-            String summary = summ_jsonObject.get("description").getAsString();
-
-            WeatherOfDay obj = new WeatherOfDay(date_of_the_day, avgTemperature, feelsLikeTemperature, humidity,
-                    summary);
-
+            WeatherOfDay obj = new WeatherOfDay(dateOfTheDay, avgTemperature, feelsLikeTemperature, humidity, summary);
             forecast.add(obj);
-
         }
+
         return forecast;
     }
-
 }
+

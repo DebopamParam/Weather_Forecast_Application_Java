@@ -17,24 +17,31 @@ public class GetLocation {
     private Double latitude;
     private Double longitude;
 
-    public GetLocation getLocation() throws IOException, InterruptedException, URISyntaxException {
+    private static final HttpClient httpClient = HttpClient.newHttpClient();
+    private static final Gson gson = new Gson();
+    private static final String API_KEY = "kasosC3TdrjLRLfLqL5L2LCzZT5r9Yuq"; // Replace with your actual API key
 
-        GetLocation location = new GetLocation();
-        HttpClient httpClient = HttpClient.newHttpClient();
-        GetIP ip = new GetIP();
-        Gson gson = new Gson();
+    public GetLocation getLocation() {
+        try {
+            GetIP ip = new GetIP();
+            String ipAddress = ip.getIp();
 
-        String ipAddress = ip.getIp();
+            URI requestUri = new URI("https://api.apilayer.com/ip_to_location/" + ipAddress);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(requestUri)
+                    .header("apikey", API_KEY)
+                    .GET().build();
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("https://api.apilayer.com/ip_to_location/" + ipAddress))
-                .header("apikey", "kasosC3TdrjLRLfLqL5L2LCzZT5r9Yuq")
-                .GET().build();
+            HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
+            return gson.fromJson(response.body(), GetLocation.class);
 
-        HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
-        location = gson.fromJson(response.body(), GetLocation.class);
+        } catch (IOException | InterruptedException | URISyntaxException e) {
+            // Handle exceptions appropriately
+            e.printStackTrace();
+            // Consider logging the exception or throwing a custom exception
+        }
 
-        return location;
+        return null; // or throw an exception indicating failure
     }
 
     public String getCity() {
