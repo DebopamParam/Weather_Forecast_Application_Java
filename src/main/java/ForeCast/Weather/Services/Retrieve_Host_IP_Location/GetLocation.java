@@ -19,7 +19,7 @@ public class GetLocation {
 
     private static final HttpClient httpClient = HttpClient.newHttpClient();
     private static final Gson gson = new Gson();
-    private static final String API_KEY = "kasosC3TdrjLRLfLqL5L2LCzZT5r9Yuq"; // Replace with your actual API key
+    private static final String API_KEY = "Enter Your API key"; // Replace with your actual API key
 
     public GetLocation getLocation() {
         try {
