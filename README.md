@@ -1,5 +1,5 @@
 # Weather_Forecast_Application_Java
-A java program in Maven that extracts the location of the Current_User using IP Address and Forecasts the weather report of the week \n
+A java program in Maven that extracts the location of the Current_User using IP Address and Forecasts the weather report of the week 
 
 • Fetch Local Host Name  
 • Fetch Public IP Address  
